@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 def islower(c):
-    return 97 <= ord(c) <=122
+    return 'a' <= c <= 'z'
 char_input = 'a'
 result = islower(char_input)
 print(result)
