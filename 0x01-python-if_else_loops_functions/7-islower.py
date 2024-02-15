@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 def islower(c):
-    return 'a' <= c <= 'z'
+    try:
+        return 'a' <= c <= 'z'
+    except TypeError:
+        print("Error: Input is not a character.")
+        return False
+    
+result = islower('a')
+print(result)
 
-
-char_input = 'a'
-result = islower(char_input)
+result = islower('A')
 print(result)
