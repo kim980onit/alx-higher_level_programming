@@ -1,13 +1,6 @@
 #!/usr/bin/python3
 def islower(c):
-    try:
-        return 'a' <= c <= 'z'
-    except TypeError:
-        print("Error: Input is not a character.")
+    if ord(c) >= 97 and ord(c) <= 122:
+        return True
+    else:
         return False
-    
-result = islower('a')
-print(result)
-
-result = islower('A')
-print(result)
