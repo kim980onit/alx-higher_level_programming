@@ -5,7 +5,7 @@
  * @number:secondparemeter for the number to insert
  * Return: 0 if the function fails || pointer to the new node
  */
-listint_t *insert_node(list_init **head, int number)
+listint_t *insert_node(listint_t **head, int number)
 {
 	listint_t *node = *head, *new;
 
