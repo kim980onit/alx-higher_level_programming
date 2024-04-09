@@ -8,5 +8,5 @@ if (numOfArg === 0) {
 } else if (numOfArg === 3) {
 	  console.log('Argument found');
 } else {
-	console.log('Argument found');
+  console.log('Argument found');
 }
