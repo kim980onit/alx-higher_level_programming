@@ -1,29 +1,53 @@
 #!/usr/bin/python3
+
 """
-Lists all states with a name starting with N (upper N) from the
-database hbtn_0e_0_usa
+A script that lists all states from the database hbtn_0e_0_usa
+starting with a capital letter N
+Username, password, and database names are given as user args
 """
 
+import sys
 import MySQLdb
-from sys import argv
 
-def print_n_states(username, password, database):
-    db = MySQLdb.connect(host="localhost", port=3306, user=username,
-                         passwd=password, db=database)
+def main():
+    """
+    Main function to execute the script
+    """
+
+    if len(sys.argv) != 4:
+        print("Usage: {} <username> <password> <database>".format(sys.argv[0]))
+        sys.exit(1)
+
+
+    try:
+        db = MySQLdb.connect(user=sys.argv[1],
+                             passwd=sys.argv[2],
+                             db=sys.argv[3],
+                             host='localhost',
+                             port=3306)
+    except MySQLdb.Error as e:
+        print("Error connecting to the database:", e)
+        sys.exit(1)
 
     cursor = db.cursor()
 
-    cursor.execute("SELECT * FROM states WHERE name LIKE 'N%' ORDER BY id ASC")
-    results = cursor.fetchall()
+    try:
+        cursor.execute("SELECT * FROM states \
+                        WHERE name LIKE BINARY 'N%' \
+                        ORDER BY id ASC")
+    except MySQLdb.Error as e:
+        print("Error executing SQL query:", e)
+        cursor.close()
+        db.close()
+        sys.exit(1)
 
-    for row in results:
+    data = cursor.fetchall()
+
+    for row in data:
         print(row)
 
     cursor.close()
     db.close()
 
-if __name__ == "__main__":
-    if len(argv) != 4:
-        print("Usage: {} username password database".format(argv[0]))
-    else:
-        print_n_states(argv[1], argv[2], argv[3])
+if __name__ == '__main__':
+    main()
