@@ -6,29 +6,26 @@
 """
 
 
-import sys
-from model_state import Base, State
+from sys import argv
+from model_state import State, Base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 if __name__ == '__main__':
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.format(
-                           sys.argv[1], sys.argv[2], sys.argv[3]),
-                           pool_pre_ping=True)
 
+    db_url = "mysql+mysqldb://{}:{}@localhost:3306/{}".format(
+            argv[1], argv[2], argv[3])
+
+    engine = create_engine(db_url)
     Session = sessionmaker(bind=engine)
-    Base.metadata.create_all(engine)
 
-    # create a session
     session = Session()
 
-    # extract states with a in them
-    states = session.query(State).filter(State.name.ilike('%a%')).all()
+    states = session.query(State).filter(State.name.contains('a'))
+    if states is not None:
+        for state in states:
+            session.delete(state)
 
-    # delete states
-    for state in states:
-        session.delete(state)
+            session.commit()
 
-    session.commit()
-
-    session.close()
+            session.close()
